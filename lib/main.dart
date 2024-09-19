@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zfont/domain/ext/ext.dart';
 import 'package:zfont/domain/repo/repo.dart';
 import 'package:zfont/model/category.dart';
@@ -10,12 +11,10 @@ import 'domain/dimen.dart';
 import 'widget/font_item.dart';
 
 main() async {
-  runApp(
-    ChangeNotifierProvider(
-        create: (context) => ThemeNotifier(),
-        child: const MyApp(),
-    )
-  );
+  runApp(ChangeNotifierProvider(
+    create: (context) => ThemeNotifier(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -33,7 +32,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -77,29 +75,92 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             onPressed: () {
               setState(() {
-                final provider = Provider.of<ThemeNotifier>(context,listen: false);
-                if(context.isDarkMode){
+                final provider =
+                    Provider.of<ThemeNotifier>(context, listen: false);
+                if (context.isDarkMode) {
                   provider.setLightMode();
-                }else{
+                } else {
                   provider.setDarkMode();
                 }
               });
             },
-            icon: Icon(context.isDarkMode ? Icons.dark_mode_rounded : Icons.light_mode_rounded),
+            icon: Icon(context.isDarkMode
+                ? Icons.dark_mode_rounded
+                : Icons.light_mode_rounded),
           ),
         ],
+      ),
+      drawer: NavigationDrawer(
+        children: [
+          const NavigationDrawerDestination(
+            icon: Icon(Icons.home_rounded),
+            label: Text("Main"),
+          ),
+          const NavigationDrawerDestination(
+            icon: Icon(Icons.font_download_rounded),
+            label: Text("Google Font"),
+          ),
+          const NavigationDrawerDestination(
+            icon: Icon(Icons.face),
+            label: Text("Font Squirrel"),
+          ),
+          const NavigationDrawerDestination(
+            icon: Icon(Icons.emoji_events_rounded),
+            label: Text("DaFont"),
+          ),
+          const NavigationDrawerDestination(
+            icon: Icon(Icons.one_k_plus),
+            label: Text("1001 Fonts"),
+          ),
+          const NavigationDrawerDestination(
+            icon: Icon(Icons.rocket_launch_rounded),
+            label: Text("FontSpace"),
+          ),
+          const NavigationDrawerDestination(
+            icon: Icon(Icons.text_fields_rounded),
+            label: Text("FontM"),
+          ),
+          const NavigationDrawerDestination(
+            icon: Icon(Icons.beach_access_rounded),
+            label: Text("FFonts"),
+          ),
+          const Divider(),
+          ListTile(
+            title: Center(
+                child: Text(
+              "Developed by Khun Htetz Naing",
+              style: Theme.of(context).textTheme.bodySmall,
+            )),
+            subtitle: Center(
+                child: Text(
+              "Made with 💚in Myanmar",
+              style: Theme.of(context).textTheme.bodySmall,
+            )),
+            onTap: () {
+              launchUrl(Uri.parse("https://github.com/zFont/flutter-app"));
+            },
+          )
+        ],
+        onDestinationSelected: (index) {
+          if (index != 0) {
+            context.showSnack("TODO!");
+          }
+          Navigator.pop(context);
+        },
       ),
       body: RefreshIndicator(
         onRefresh: _loadConfig,
         child: items.isEmpty
-            ? const Center(child: CircularProgressIndicator(),)
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
             : Column(
-          children: [
-            _slider(),
-            _category(),
-            _list(),
-          ],
-        ),
+                children: [
+                  _slider(),
+                  _category(),
+                  _list(),
+                ],
+              ),
       ),
     );
   }
@@ -158,17 +219,21 @@ class _MyHomePageState extends State<MyHomePage> {
         itemExtent: 320,
         shrinkExtent: 160,
         itemSnapping: true,
-        children: List<Widget>.generate(slider.isEmpty ? 20 : slider.length, (int index) {
+        children: List<Widget>.generate(slider.isEmpty ? 20 : slider.length,
+            (int index) {
           final item = slider.isEmpty ? null : slider[index];
           return Container(
-            color: Colors.primaries[index % Colors.primaries.length].withOpacity(0.5),
-            child: item == null ? null : Image.network(
-              item.preview!,
-              fit: BoxFit.cover,
-              errorBuilder: (context,error,tract){
-                return Container();
-              },
-            ),
+            color: Colors.primaries[index % Colors.primaries.length]
+                .withOpacity(0.5),
+            child: item == null
+                ? null
+                : Image.network(
+                    item.preview!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, tract) {
+                      return Container();
+                    },
+                  ),
           );
         }),
       ),
@@ -186,21 +251,21 @@ class _MyHomePageState extends State<MyHomePage> {
       suggestionsBuilder: (BuildContext context, SearchController controller) {
         final query = controller.text;
         List<FontItem> found = [];
-        for(final e in items){
-          final matched = e.items.where((e) => e.name.toLowerCase().contains(query));
+        for (final e in items) {
+          final matched =
+              e.items.where((e) => e.name.toLowerCase().contains(query));
           found.addAll(matched);
         }
-        
+
         return [
-          if(found.isEmpty)
+          if (found.isEmpty)
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: Dimen.paddingMedium),
+              padding:
+                  const EdgeInsets.symmetric(vertical: Dimen.paddingMedium),
               child: Center(child: Text("No result for '$query'")),
             )
           else
-            for(final item in found)...{
-              FontCard(item: item)
-            }
+            for (final item in found) ...{FontCard(item: item)}
         ];
       },
     );
