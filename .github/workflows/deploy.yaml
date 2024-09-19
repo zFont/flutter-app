@@ -1,0 +1,44 @@
+name: Flutter Deploy to Cloudflare Page
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual trigger from GitHub Actions UI
+
+jobs:
+  build-and-publish:
+    name: Build and Publish App
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version: 3.24.3
+
+    - run: flutter --version
+
+    - name: Build web
+      run: flutter build web --release
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: web-build
+        path: build/web
+
+    - name: Publish to Cloudflare Pages
+      uses: cloudflare/pages-action@v1.5.0
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        projectName: zfont
+        directory: build/web
+        gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+        branch: main
+        wranglerVersion: '3'
+
