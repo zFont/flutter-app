@@ -133,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
             )),
             subtitle: Center(
                 child: Text(
-              "Made with 💚in Myanmar",
+              "<Made with 💚 in Myanmar/>",
               style: Theme.of(context).textTheme.bodySmall,
             )),
             onTap: () {
