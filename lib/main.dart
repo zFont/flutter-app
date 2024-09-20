@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +15,10 @@ import 'widget/font_item.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top], );
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
+  );
   runApp(ChangeNotifierProvider(
     create: (context) => ThemeNotifier(),
     child: const MyApp(),
@@ -95,6 +100,20 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       drawer: NavigationDrawer(
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: Dimen.paddingLarge + Dimen.paddingSmallest,
+                vertical: Dimen.paddingMedium),
+            child: GestureDetector(
+              child: Text(
+                "zFont",
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              onTap: () => context.openLink(
+                  "https://play.google.com/store/apps/details?id=com.htetznaing.zfont2"),
+            ),
+          ),
+          const Divider(),
           const NavigationDrawerDestination(
             icon: Icon(Icons.home_rounded),
             label: Text("Main"),
@@ -220,11 +239,11 @@ class _MyHomePageState extends State<MyHomePage> {
       height: 160,
       child: CarouselView(
         itemExtent: 320,
-        shrinkExtent: 160,
+        shrinkExtent: 60,
         itemSnapping: true,
-        children: List<Widget>.generate(slider.isEmpty ? 20 : slider.length,
+        children: List<Widget>.generate(slider.isEmpty ? 10 : slider.length,
             (int index) {
-          final item = slider.isEmpty ? null : slider[index];
+          final item = slider.elementAtOrNull(index);
           return Container(
             color: Colors.primaries[index % Colors.primaries.length]
                 .withOpacity(0.5),
@@ -239,6 +258,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
           );
         }),
+        onTap: (index) {
+          final item = slider.elementAtOrNull(index);
+          if (item != null) {
+            context.openLink(item.downloadUrl);
+          }
+        },
       ),
     );
   }

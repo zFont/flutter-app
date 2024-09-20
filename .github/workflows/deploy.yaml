@@ -1,4 +1,4 @@
-name: Flutter Deploy to Cloudflare Page
+name: Flutter Deploy to Cloudflare and GitHub Pages
 
 on:
   push:
@@ -6,39 +6,69 @@ on:
       - main
   workflow_dispatch: # Allows manual trigger from GitHub Actions UI
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  build-and-publish:
-    name: Build and Publish App
+  build:
+    name: Build Web App
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        channel: stable
-        cache: true
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
 
-    - run: flutter --version
+      - name: Verify Flutter environment
+        run: flutter doctor
 
-    - name: Build web
-      run: flutter build web --web-renderer html --release
+      - name: Install dependencies
+        run: flutter pub get
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: web-build
-        path: build/web
+      - name: Build web
+        run: flutter build web --web-renderer html --release
 
-    - name: Publish to Cloudflare Pages
-      uses: cloudflare/pages-action@v1.5.0
-      with:
-        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        projectName: zfont
-        directory: build/web
-        gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-        branch: production
-        wranglerVersion: '3'
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-build
+          path: build/web
 
+  publish:
+    name: Publish to Cloudflare & GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: web-build
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1.5.0
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: zfont
+          directory: build/web
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          branch: production
+          wranglerVersion: '3'
+
+      - name: Set up GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

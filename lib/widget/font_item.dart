@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:zfont/domain/dimen.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:zfont/domain/ext/ext.dart';
 import '../model/font.dart';
 
@@ -42,7 +41,7 @@ class FontCard extends StatelessWidget {
                                   ? null
                                   : (TapGestureRecognizer()
                                     ..onTap = () =>
-                                        _openLink(context, item.authorLink!)),
+                                        context.openLink(item.authorLink!)),
                             ),
                         ]),
                   ),
@@ -75,7 +74,7 @@ class FontCard extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => _openLink(context, item.downloadUrl),
+                  onPressed: () => context.openLink(item.downloadUrl),
                   icon: Icon(
                     Icons.download_rounded,
                     color: Theme.of(context).colorScheme.primary,
@@ -87,12 +86,5 @@ class FontCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _openLink(BuildContext context, String link) async {
-    final url = Uri.parse(link);
-    if (!await launchUrl(url)) {
-      if (context.mounted) context.showSnack('Could not launch $url');
-    }
   }
 }
