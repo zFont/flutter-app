@@ -1,11 +1,11 @@
 {
-    "name": "zfont",
-    "short_name": "zfont",
+    "name": "Flutter zFont",
+    "short_name": "zFont",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "zFont Web in Flutter",
+    "description": "zFont in Flutter",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zfont/domain/ext/ext.dart';
@@ -11,6 +12,8 @@ import 'domain/dimen.dart';
 import 'widget/font_item.dart';
 
 main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top], );
   runApp(ChangeNotifierProvider(
     create: (context) => ThemeNotifier(),
     child: const MyApp(),
@@ -98,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           const NavigationDrawerDestination(
             icon: Icon(Icons.font_download_rounded),
-            label: Text("Google Font"),
+            label: Text("Google Fonts"),
           ),
           const NavigationDrawerDestination(
             icon: Icon(Icons.face),

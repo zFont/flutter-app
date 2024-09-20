@@ -23,7 +23,7 @@ jobs:
     - run: flutter --version
 
     - name: Build web
-      run: flutter build web --release
+      run: flutter build web --web-renderer html --release
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4

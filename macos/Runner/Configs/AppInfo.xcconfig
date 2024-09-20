@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = zfont
+PRODUCT_NAME = zFont
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.zfont
+PRODUCT_BUNDLE_IDENTIFIER = com.htetz.zfont
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2024 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2024 com.htetz. All rights reserved.

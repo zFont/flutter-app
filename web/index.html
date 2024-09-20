@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head>
+<!DOCTYPE html><html lang="en"><head>
   <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.
@@ -16,7 +16,7 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="zFont Web in Flutter">
+  <meta name="description" content="Flutter zFont">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -27,26 +27,24 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
 
-  <title>zfont</title>
+  <title>zFont</title>
   <link rel="manifest" href="manifest.json">
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  
-  
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <style>
+    p {
+      color: black;
+      font-family: sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      p {
+        color: white;
+      }
+    }
+  </style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+
   <style id="splash-screen-style">
     html {
       height: 100%
@@ -55,7 +53,7 @@
     body {
       margin: 0;
       min-height: 100%;
-      background-color: #d4e8d0;
+      background-color: #f7fbf2;
           background-size: 100% 100%;
     }
 
@@ -107,10 +105,11 @@
 
     @media (prefers-color-scheme: dark) {
       body {
-        background-color: #3a4b3a;
-          }
+          background-color: #101510;
+        }
     }
   </style>
+
   <script id="splash-screen-script">
     function removeSplashFromWeb() {
       document.getElementById("splash")?.remove();
@@ -118,6 +117,7 @@
       document.body.style.background = "transparent";
     }
   </script>
+
 </head>
 <body>
   <picture id="splash">
@@ -125,15 +125,7 @@
       <source srcset="splash/img/dark-1x.png 1x, splash/img/dark-2x.png 2x, splash/img/dark-3x.png 3x, splash/img/dark-4x.png 4x" media="(prefers-color-scheme: dark)">
       <img class="center" aria-hidden="true" src="splash/img/light-1x.png" alt="">
   </picture>
-  
-  
-  
-  
-  
-  
-  
-  
-  <script src="./flutter_bootstrap.js" async=""></script>
 
-
-</body></html>
+  <script src="flutter_bootstrap.js" async=""></script>
+</body>
+</html>
