@@ -39,6 +39,6 @@ jobs:
         projectName: zfont
         directory: build/web
         gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-        branch: main
+        branch: production
         wranglerVersion: '3'
 
