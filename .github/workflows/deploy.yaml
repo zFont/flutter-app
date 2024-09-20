@@ -1,15 +1,10 @@
-name: Flutter Deploy to Cloudflare and GitHub Pages
+name: Flutter Deploy to Cloudflare
 
 on:
   push:
     branches:
       - main
   workflow_dispatch: # Allows manual trigger from GitHub Actions UI
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
 
 jobs:
   build:
@@ -55,25 +50,13 @@ jobs:
           name: web-build
           path: build/web
 
-#      - name: Publish to Cloudflare Pages
-#        uses: cloudflare/pages-action@v1
-#        with:
-#          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-#          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-#          projectName: zfont
-#          directory: build/web
-#          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-#          branch: production
-#          wranglerVersion: '3'
-
-      - name: Set up GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload to GitHub Pages
-        uses: actions/upload-pages-artifact@v3
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
         with:
-          path: build/web
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: zfont
+          directory: build/web
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          branch: production
+          wranglerVersion: '3'
